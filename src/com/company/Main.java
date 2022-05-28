@@ -14,12 +14,15 @@ public class Main {
         System.out.print("스레드 개수 입력 >> ");
         threadNum = sc.nextInt();
 
-        runnables = new Runnable[threadNum];
+        runnables = new MalwareTestThread[threadNum];
         threads = new Thread[threadNum];
 
         for(int i=0; i<threadNum; i++) {
-            runnables[i] = new MalwareTestThread(i, malwareTestSystem);
+            runnables[i] = new MalwareTestThread(i, malwareTestSystem, threadNum);
             threads[i] = new Thread(runnables[i]);
+        }
+        for(int i=0; i<threadNum; i++) {
+            threads[i].start();
         }
     }
 }
