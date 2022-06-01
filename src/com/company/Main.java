@@ -33,12 +33,31 @@ public class Main {
             e.printStackTrace();
         } finally {
             System.out.println("-----결과 출력-----");
-            System.out.println("Spyware을 포함하고 있는 파일");
+            System.out.println("정상 파일로 분류된 파일들");
+            int count = 0;
             for(int i=0; i<MalwareTestSystem.TEST_CODE_NUM; i++) {
-                if(malwareTestSystem.testObjs[i].isFindSpyware == true) {
+                if(malwareTestSystem.testObjs[i].isFindSpyware == false && malwareTestSystem.testObjs[i].isFindTrojan == false) {
                     System.out.println("File" + malwareTestSystem.testObjs[i].testId + ".txt");
+                    count++;
                 }
             }
+            System.out.println("총 " + count + "개");
+            System.out.println("악성 파일로 분류된 파일들");
+            count = 0;
+            for(int i=0; i<MalwareTestSystem.TEST_CODE_NUM; i++) {
+                if(malwareTestSystem.testObjs[i].isFindSpyware == true || malwareTestSystem.testObjs[i].isFindTrojan == true) {
+                    System.out.print("File" + malwareTestSystem.testObjs[i].testId + ".txt --> ");
+                    if(malwareTestSystem.testObjs[i].isFindSpyware == true) {
+                        System.out.print("Spyware");
+                    }
+                    if(malwareTestSystem.testObjs[i].isFindTrojan == true) {
+                        System.out.print("Trojan");
+                    }
+                    System.out.println();
+                    count++;
+                }
+            }
+            System.out.println("총 " + count + "개");
         }
     }
 }
