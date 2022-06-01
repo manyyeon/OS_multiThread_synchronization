@@ -14,7 +14,7 @@ public class Main {
     Thread[] threads; // 스레드 배열
     ImportFiles importFiles = new ImportFiles(); // 파일 읽어오는 객체
     MalwareTestSystem malwareTestSystem; // 공유 객체 악성코드 검사 시스템 생성
-    JButton startButton = importFiles.startButton;
+    JButton startButton = importFiles.startButton; // 악성코드 검사를 시작하는 버튼
     public Main() {
         startButton.addActionListener(new StartActionListener());
     }

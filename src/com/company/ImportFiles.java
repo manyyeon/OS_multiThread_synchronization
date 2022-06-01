@@ -9,7 +9,7 @@ import java.io.File;
 
 class ImportFiles extends JFrame {
     Container c = getContentPane();
-    JButton startButton = new JButton("Start");
+    JButton startButton = new JButton("여기를 누르면 악성코드 검사 시작(파일을 먼저 import 한 후에 시작하세요)");
     String [] testFilePathList; // 테스트 파일 경로
     String [] testFileNameList; // 테스트 파일 이름
     String [] malwareFilePathList; // 악성 코드 파일 경로
