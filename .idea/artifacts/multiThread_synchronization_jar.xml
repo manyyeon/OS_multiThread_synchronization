@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="multiThread_synchronization:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/multiThread_synchronization_jar</output-path>
+    <root id="archive" name="multiThread_synchronization.jar">
+      <element id="module-output" name="multiThread_synchronization" />
+    </root>
+  </artifact>
+</component>
