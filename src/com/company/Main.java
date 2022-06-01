@@ -25,5 +25,20 @@ public class Main {
             //threads[i].setName((i+1) + "번 스레드");
             threads[i].start();
         }
+        try {
+            for(int i=0; i<threadNum; i++) {
+                threads[i].join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("-----결과 출력-----");
+            System.out.println("Spyware을 포함하고 있는 파일");
+            for(int i=0; i<MalwareTestSystem.TEST_CODE_NUM; i++) {
+                if(malwareTestSystem.testObjs[i].isFindSpyware == true) {
+                    System.out.println("File" + malwareTestSystem.testObjs[i].testId + ".txt");
+                }
+            }
+        }
     }
 }
