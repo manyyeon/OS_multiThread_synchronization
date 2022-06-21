@@ -23,7 +23,8 @@ S의 개수를 정해주면 누군가 들어와서 자원 한 개를 가져가�
 <img width="536" alt="image" src="https://user-images.githubusercontent.com/87538540/174722337-f871fb85-0d8d-4ba0-aef7-64e34f16d470.png">
 
 
-```// 세마포어 객체 생성 (Counting Semaphore)
+```
+// 세마포어 객체 생성 (Counting Semaphore)
 private Semaphore semaphore = new Semaphore(TEST_CODE_NUM, true);
 ```
 
