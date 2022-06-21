@@ -32,9 +32,9 @@ private Semaphore semaphore = new Semaphore(TEST_CODE_NUM, true);
  전체적인 알고리즘 작동 방식은 다음과 같다.
 스레드가 20개 있다고 하자. 20개의 스레드는 모두 동시에 start해서 공유 자원에 접근하려는 시도를 한다. 그 중 먼저 S를 얻는 9개의 스레드들만 Critical Section에 들어가는 것이다. 나머지 스레드들은 대기하다가 다른 스레드가 100글자를 다 읽거나 그 파일을 모두 읽어서 공유 자원인 파일 점유를 끝내고 나오게 되면 그 때 들어갈 수 있는 구조이다. 9개의 스레드들이 cs 안으로 들어간 다음에 어떤 테스트 파일이 읽을 수 있는 상태인지 탐색하게 된다. 파일을 끝까지 다 읽지 않았고 다른 스레드가 읽는 중이 아닌 파일을 찾으면 그 파일에 lock을 걸고 그 파일을 읽기 시작한다. 그리고 100글자를 다 읽을 때까지 계속 한 글자씩 읽으면서 악성코드가 있나 검사를 한다. 만약 100글자를 다 읽었는데 이 파일에 읽을 글자들이 아직 남아 있다면 다른 스레드가 또 와서 계속 읽어야 하므로 lock을 풀고 isTerminated = true로 설정한 후 종료한다. 아니면 100글자를 아직 다 읽지 못했는데 파일을 다 읽어서 끝나버릴 수도 있다. 그러면 아직 다 안 읽은 파일이 존재하는지 검사를 하고 만약에 더 이상 읽을 파일이 없다면 isTerminated = true로 설정하고 종료한다. 아직 100글자를 다 읽지 못했어도 더 이상 읽을 파일이 없으면 어차피 또 읽으러 들어가봤자 읽을 파일이 없어서 다시 나오게 될 거고 또 들어가고 또 나오고 이렇게 무한루프에 빠지게 된다. 만약에 더 읽을 파일들이 남아 있다면 그냥 나간다. 그럼 다시 스레드 run() 함수에서 다시 use() 함수를 호출하여 공유 자원을 획득하러 들어갈 것이다.
  
-2.	전체적인 구조
+# 2.	전체적인 구조
 총 5개의 클래스로 구성되어 있다.
-1)	Main class
+## 1)	Main class
 스레드 개수를 입력받고 스레드 객체를 생성하고 모든 스레드들을 start 시킨다. 그리고 마지막에 최종 결과인 정상 파일로 분류된 파일들과 악성 파일로 분류된 파일들을 출력한다.
 Runnables 배열에 객체를 생성할 때 스레드 id와 공유 객체인 악성코드 검사 시스템을 파라미터로 넘겨준다.
 파일을 먼저 다 불러온 후에 악성코드 검사 시작하는 버튼을 누르면 검사가 시작된다.
@@ -46,7 +46,9 @@ ImportFiles importFiles = new ImportFiles(); // 파일 읽어오는 객체
 MalwareTestSystem malwareTestSystem; // 공유 객체 악성코드 검사 시스템 생성
 JButton startButton = importFiles.startButton; // 악성코드 검사를 시작하는 버튼
 
-2)	ImportFiles Class
+---------
+
+## 2)	ImportFiles Class
 파일을 Import하기 위한 GUI를 구현해놓은 클래스이다.
 -	변수
 Container c = getContentPane();
@@ -56,7 +58,10 @@ String [] testFileNameList; // 테스트 파일 이름
 String [] malwareFilePathList; // 악성 코드 파일 경로
 String [] malwareFileNameList; // 악성 코드 파일 이름
 버튼을 눌러서 파일들을 불러오면 테스트 파일 경로와 이름, 악성코드 파일 경로와 이름을 배열에 저장해놓는다.
-3)	MalwareTestThread class
+
+-------
+
+## 3)	MalwareTestThread class
 악성코드를 탐지하는 스레드 클래스이다. Runnable 인터페이스를 implements하여 스레드 클래스를 만들었다. 
 -	변수
 public static int MAX_AVAILABLE_READ_NUM = 100; // 스레드가 읽을 수 있는 최대 문자 개수
@@ -77,7 +82,10 @@ public void run() {
     }
 }
 run() 함수에서 이 스레드가 종료되었다고 알려주는 isTerminated 변수가 true이거나 스레드가 100글자를 다 읽을 때까지 계속 공유 객체로 들어가서 use() 함수를 실행한다. malwareTestSystem 클래스의 함수인 use() 함수에서는 세마포어가 작동한다. S > 0 이면 공유자원을 획득하고 cs로 들어가고 S = 0이면 대기한다. 공유 자원을 획득하고 들어갔다가 방출하고 나오게 되는데 이 때 또 while문의 조건을 만족하면(아직 글자 100개를 다 못읽었고 isTerminate == true) 다시 들어가는 것이다. 다시 들어가서 또 다른 파일을 검사할 수 있다. 100 글자를 다 읽을 때까지 반복한다.
-4)	MalwareTestSystem class(공유자원)
+
+---------
+
+## 4)	MalwareTestSystem class(공유자원)
 이 클래스는 공유 자원이다. 여기서 Semaphore 객체를 생성하고 S > 0일 때만 공유 자원(파일)에 접근하고 S = 0이면 대기하는 것이다.
 -	변수
 public static final int TEST_CODE_NUM = 9;
@@ -176,7 +184,7 @@ public void searchMalwareCode(MalwareTestThread currentThread) {
     }
 }
 
-5)	Malware class
+## 5)	Malware class
 이 클래스는 악성코드의 정보를 담고 있고 파일에서 문자열을 읽어와서 String에 저장한다.
 -	변수
 String name = ""; // 악성코드 이름
@@ -199,7 +207,10 @@ public void readMalwareFile() {
     }
 }
 텍스트 파일에서 악성코드를 읽어와 code 변수에 저장한다.
-6)	TestObj class
+
+------
+
+## 6)	TestObj class
 이 클래스는 검사할 텍스트 파일의 정보를 담고 있고 문자열을 읽어와서 String에 저장한다.
 -	변수
 int testId; // test 코드 id
