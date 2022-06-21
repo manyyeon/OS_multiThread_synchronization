@@ -1,6 +1,8 @@
 # OS_multiThread_synchronization
 멀티미디어운영체제 과제3
-Multi Thread와 Critical Section을 이용한 악성코드 패턴 탐지 시스템 구현
+
+## Multi Thread와 Critical Section을 이용한 악성코드 패턴 탐지 시스템 구현
+
 구현 언어 : java
 
 # 목차
