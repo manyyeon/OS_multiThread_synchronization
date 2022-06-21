@@ -1,1 +1,1 @@
-# multiThread_synchronization
+# OS_multiThread_synchronization
