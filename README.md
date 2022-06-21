@@ -34,17 +34,21 @@ private Semaphore semaphore = new Semaphore(TEST_CODE_NUM, true);
  
 # 2.	전체적인 구조
 총 5개의 클래스로 구성되어 있다.
+
 ## 1)	Main class
 스레드 개수를 입력받고 스레드 객체를 생성하고 모든 스레드들을 start 시킨다. 그리고 마지막에 최종 결과인 정상 파일로 분류된 파일들과 악성 파일로 분류된 파일들을 출력한다.
 Runnables 배열에 객체를 생성할 때 스레드 id와 공유 객체인 악성코드 검사 시스템을 파라미터로 넘겨준다.
 파일을 먼저 다 불러온 후에 악성코드 검사 시작하는 버튼을 누르면 검사가 시작된다.
+
 -	변수
+```
 int threadNum = 0; // 스레드 총 개수
 Runnable[] runnables; // runnable 객체 배열
 Thread[] threads; // 스레드 배열
 ImportFiles importFiles = new ImportFiles(); // 파일 읽어오는 객체
 MalwareTestSystem malwareTestSystem; // 공유 객체 악성코드 검사 시스템 생성
 JButton startButton = importFiles.startButton; // 악성코드 검사를 시작하는 버튼
+```
 
 ---------
 
@@ -183,6 +187,8 @@ public void searchMalwareCode(MalwareTestThread currentThread) {
         currentThread.currentTestObj.bookMarkIdx++; // 파일의 북마크 인덱스 += 1
     }
 }
+
+-----------
 
 ## 5)	Malware class
 이 클래스는 악성코드의 정보를 담고 있고 파일에서 문자열을 읽어와서 String에 저장한다.
