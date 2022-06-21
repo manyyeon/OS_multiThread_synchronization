@@ -13,13 +13,14 @@ Multi Thread와 Critical Section을 이용한 악성코드 패턴 탐지 시스�
 # 1.	Critical Section Synchronization 문제를 해결하기 위한 방법
 이 시스템에서 critical sction은 9개의 테스트 파일이다. 9개의 테스트 파일은 동시에 검사하지만 1개의 파일을 여러 스레드가 동시에 접근하면 안된다. 이 문제를 해결하기 위해 세마포어와 lock 변수를 사용했다. Java에서 제공하는 Semaphore API 클래스를 활용하였다.
 <img width="417" alt="image" src="https://user-images.githubusercontent.com/87538540/174722105-6f008b53-41cc-4ce5-80a3-f57633a2d702.png">
+
 <img width="417" alt="image" src="https://user-images.githubusercontent.com/87538540/174722124-dbd59134-5dfb-48da-83ca-a4107aa1a067.png">
 
 자바 API 문서를 보면 첫번째 파라미터는 공유 자원의 개수를 의미하고 이걸 이제부터 S라고 하겠다. Semaphore에는 binary semaphore와 counting semaphore가 있다. binary semaphore는 공유 자원이 2개인 거고 counting semaphore는 공유 자원이 여러 개인 것이다. 
 S의 개수를 정해주면 누군가 들어와서 자원 한 개를 가져가려고 할 때 S의 숫자를 본다. S > 0이면 들어와서 공유 자원 하나를 점유하고 S – 1을 한다. 점유를 끝내고 나갈 때 다시 S + 1을 하고 나간다. 여기서 S > 0인지 확인하고 S-1을 한 후 cs에 접근하게 해주는 함수가 acquire() 함수이다. 그리고 cs가 끝났을 때 S + 1을 하고 공유자원을 방출하게 하는 함수가 release() 함수이다. S = 0 이면 남은 공유 자원이 없다는 뜻이므로 대기한다. S가 다시 양수가 될 때까지 대기한다. 대기 상태에 들어간 스레드들은 List에 저장이 된다. 사용 가능한 공유 자원이 다시 생기면 이 List에 들어가 있는 스레드들 중에 하나를 깨워서 공유 자원을 사용하게 한다. 이 때, 누구를 먼저 깨울지 결정해야 하는데 Semaphore 클래스 생성자 2번째 파라미터로 들어가는 fair에 의해 결정된다. true이면 FIFO 방식으로 제일 처음 들어갔던 스레드를 깨우는 것이고 false이면 무작위로 아무 스레드나 깨운다.
  악성코드 탐지 시스템에서는 공유 자원이 9개이다. 따라서 counting semaphore를 사용했다.
  
- <img width="227" alt="image" src="https://user-images.githubusercontent.com/87538540/174722204-9f2d0328-438d-458c-9c0c-6a3d5a445463.png">
+<img width="536" alt="image" src="https://user-images.githubusercontent.com/87538540/174722337-f871fb85-0d8d-4ba0-aef7-64e34f16d470.png">
 
 
 // 세마포어 객체 생성 (Counting Semaphore)
@@ -754,5 +755,3 @@ class TestObj {
         }
     }
 }
-
-![image](https://user-images.githubusercontent.com/87538540/174721958-49f2e41d-8312-452d-bcfd-9f0135cc65c3.png)
