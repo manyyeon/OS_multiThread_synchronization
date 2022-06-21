@@ -274,24 +274,42 @@ public void readTestFile(){
 이 함수에서 테스트 파일의 문자열 전체를 읽어와서 testCode 변수에 저장한다.
 ## 3. 실행결과
 파일을 불러오는 버튼과 검사를 시작하는 버튼이 있다. 먼저 파일을 불러오는 버튼을 눌러서 테스트 파일과 악성코드 파일들을 한꺼번에 불러온다.
+
+<img width="209" alt="image" src="https://user-images.githubusercontent.com/87538540/174723609-b2318ac0-f70a-4768-a8af-c71eb8547376.png">
  
 테스트 파일들을 불러온다. 불러오면 어떤 파일들을 불러왔는지 출력해준다.
  
- 
+<img width="351" alt="image" src="https://user-images.githubusercontent.com/87538540/174723632-c077ff80-45a2-4304-b976-17f7ded85385.png">
+
+<img width="73" alt="image" src="https://user-images.githubusercontent.com/87538540/174723648-1b74737d-26a7-47bb-8896-13aaa371cf4b.png">
+
+
 악성코드 파일들을 불러온다. 불러오면 어떤 파일들을 불러왔는지 출력해준다.
- 
- 
+
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/87538540/174723672-04c5aac0-a5f2-4b0c-9c8e-cb2ba3dc9478.png">
+
+<img width="147" alt="image" src="https://user-images.githubusercontent.com/87538540/174723683-b158d428-8121-49f2-88e2-2f6523d31071.png">
  
 시작 버튼을 누르면 테스트 파일과 악성코드를 먼저 모두 출력해준다. 테스트 파일의 길이도 출력해주고 전체 테스트 파일들의 길이를 고려하여 스레드의 최소 개수를 출력해주고 스레드 개수를 입력 받는다. 
- 
+
+<img width="444" alt="image" src="https://user-images.githubusercontent.com/87538540/174723714-92224e21-ca70-4f17-9f33-dd8e78a5a58d.png">
+
+<img width="444" alt="image" src="https://user-images.githubusercontent.com/87538540/174723727-0424562e-9f48-46c3-9646-619cc02c716c.png">
  
 그리고 어떤 스레드가 S를 얻어 임계영역에 들어갔는지 출력해준다. 나갈 때는 세마포어를 종료한다고 출력해준다. 그리고 어떤 스레드가 어떤 파일을 읽는지 출력해준다. 그리고 100글자를 다 읽으면 다 읽었다고 출력해준다. 악성코드를 찾으면 어떤 스레드가 어떤 악성코드를 찾았는지 출력해준다. 어떤 스레드가 어떤 파일을 어디까지 읽고 나가려는 건지, 그 읽고 있던 파일의 전체 길이는 몇인지 출력해준다. 만약 아직 그 파일에 읽을 글자들이 더 남아있다면 아직 읽을 글자들이 남아있으니 다른 스레드가 또 와서 읽어줄 것이라고 출력해준다. 어떤 스레드가 검사를 하다가 악성코드의 일부분을 발견하고 본인은 100글자를 다 읽어서 나가야 한다면 어느 악성코드의 어느 부분을 찾았는지 출력해준다. 다른 스레드가 와서 처음에 검사했을 때 앞에서 발견한 악성코드의 일부분이 그대로 이어져서 악성코드 전체가 발견이 되었다면 발견되었다고 출력해준다. 파일을 다 읽었다면 어떤 파일을 다 읽었는지, 어떤 스레드가 마지막으로 읽었는지 출력해준다.
  
- 
+<img width="344" alt="image" src="https://user-images.githubusercontent.com/87538540/174723771-b954f358-2ecc-4c10-8e5f-15fe50e85287.png">
 
- 
- 
- 
+<img width="465" alt="image" src="https://user-images.githubusercontent.com/87538540/174723820-649c2835-540f-4010-bbe9-f4334ae309ac.png">
+
+<img width="438" alt="image" src="https://user-images.githubusercontent.com/87538540/174723839-fb3da4ed-046d-4e59-8fbc-27fb5feb30d4.png">
+
+<img width="350" alt="image" src="https://user-images.githubusercontent.com/87538540/174723854-95efef20-c7c6-4122-a69a-fefb645916d2.png">
+
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/87538540/174723870-80010e42-8edb-46ba-98c8-9fa7fb765414.png">
+
+<img width="341" alt="image" src="https://user-images.githubusercontent.com/87538540/174723886-9a60de81-7bc9-4422-bb16-cbf58f04abb9.png">
  
 최종 결과인 정상 파일로 분류된 파일들과 그 개수, 악성 파일로 분류된 파일들과 그 개수, 그리고 어떤 악성 코드를 포함하고 있는지 출력해준다.
- 
+
+<img width="287" alt="image" src="https://user-images.githubusercontent.com/87538540/174723900-357f1066-981b-4711-8d75-a23a1381a71e.png">
