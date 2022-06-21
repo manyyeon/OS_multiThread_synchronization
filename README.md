@@ -40,7 +40,7 @@ private Semaphore semaphore = new Semaphore(TEST_CODE_NUM, true);
 Runnables 배열에 객체를 생성할 때 스레드 id와 공유 객체인 악성코드 검사 시스템을 파라미터로 넘겨준다.
 파일을 먼저 다 불러온 후에 악성코드 검사 시작하는 버튼을 누르면 검사가 시작된다.
 
--	변수
+### 변수
 ```
 int threadNum = 0; // 스레드 총 개수
 Runnable[] runnables; // runnable 객체 배열
@@ -54,7 +54,8 @@ JButton startButton = importFiles.startButton; // 악성코드 검사를 시작�
 
 ## 2)	ImportFiles Class
 파일을 Import하기 위한 GUI를 구현해놓은 클래스이다.
--	변수
+### 변수
+```
 Container c = getContentPane();
 JButton startButton = new JButton("여기를 누르면 악성코드 검사 시작(파일을 먼저 import 한 후에 시작하세요)");
 String [] testFilePathList; // 테스트 파일 경로
@@ -62,12 +63,14 @@ String [] testFileNameList; // 테스트 파일 이름
 String [] malwareFilePathList; // 악성 코드 파일 경로
 String [] malwareFileNameList; // 악성 코드 파일 이름
 버튼을 눌러서 파일들을 불러오면 테스트 파일 경로와 이름, 악성코드 파일 경로와 이름을 배열에 저장해놓는다.
+```
 
 -------
 
 ## 3)	MalwareTestThread class
 악성코드를 탐지하는 스레드 클래스이다. Runnable 인터페이스를 implements하여 스레드 클래스를 만들었다. 
--	변수
+### 변수
+```
 public static int MAX_AVAILABLE_READ_NUM = 100; // 스레드가 읽을 수 있는 최대 문자 개수
 int countLetterNum = 0; // 스레드가 읽은 글자 개수
 int tid; // 이 스레드 id(tid)
@@ -75,8 +78,12 @@ MalwareTestSystem malwareTestSystem; // 스레드들이 공유하는 악성코�
 TestObj currentTestObj; // 현재 검사하고 있는 테스트 코드
 boolean isTerminated = false; // 스레드가 종료되었는지
 boolean isNeedNextStartTest; // 끊긴 일치한 부분 검사가 필요한지
+```
+
 스레드가 읽을 수 있는 최대 문자 개수를 상수로 정의 해두었다. 그리고 스레드가 읽은 문자 개수를 계속 업데이트 해주면서 최대 문자 개수와 같아질 때까지 스레드를 계속 실행한다. 더 이상 읽을 파일이 없어서 악성코드 탐지 시스템 안에서 스레드를 종료 시키기 위한 변수인 isTerminated가 있다. 현재 검사하고 있는 테스트 파일이 무엇인지 알기 위해서 currentTestObj 변수를 선언했다. 이 변수는 TestObj 클래스의 객체이다. TestObj 클래스는 뒤에서 설명할 거지만 테스트 파일의 정보를 담고 있다. 스레드 id인 tid 변수와 스레드들이 공유하는 악성코드 검사 시스템 객체가 선언되어있다. 이 두 변수는 Main 함수가 이 클래스의 객체를 만들 때 넘겨받는다. 그리고 isNeedNextStartTest는 악성코드를 검사할 때 스레드가 검사를 하다가 중간에 나오게 되면 악성코드가 부분적으로 일치하는 부분을 찾았는데 다음에 다른 스레드가 들어갈 때 이 끊긴 부분이 악성코드와 전체적으로 일치하는지 검사를 해줘야 한다. 그래서 malwareTestSystem에 그 검사를 하는 코드를 작성했고 스레드가 파일을 읽기 시작하는 처음 인덱스에서만 검사를 진행할 수 있도록 이 변수를 두었다. 이 변수가 true일 때만 그 검사를 진행한다.
--	함수
+
+### 함수
+```
 @Override
 public void run() {
     // 이 스레드가 종료되었다고 알려주는 isTerminated가 true이거나 스레드가 100글자를 다 읽을 때까지 계속 공유 객체로 들어가서 use 함수를 실행함
@@ -85,6 +92,8 @@ public void run() {
         malwareTestSystem.use(this);
     }
 }
+```
+
 run() 함수에서 이 스레드가 종료되었다고 알려주는 isTerminated 변수가 true이거나 스레드가 100글자를 다 읽을 때까지 계속 공유 객체로 들어가서 use() 함수를 실행한다. malwareTestSystem 클래스의 함수인 use() 함수에서는 세마포어가 작동한다. S > 0 이면 공유자원을 획득하고 cs로 들어가고 S = 0이면 대기한다. 공유 자원을 획득하고 들어갔다가 방출하고 나오게 되는데 이 때 또 while문의 조건을 만족하면(아직 글자 100개를 다 못읽었고 isTerminate == true) 다시 들어가는 것이다. 다시 들어가서 또 다른 파일을 검사할 수 있다. 100 글자를 다 읽을 때까지 반복한다.
 
 ---------
